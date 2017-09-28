@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+    
+    <entry>
+      <title><![CDATA[Hello World]]></title>
+      <url>/2017/09/26/hello-world/</url>
+      <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>终于将个人博客搭建起来了……虽然听说Hexo搭建博客十分容易，但对于前端完全不了解的我，颇费了一番功夫。</p>
+<p>Hexo初始化这个博客目录时，自带了一个以“Hello World”为标题的文章，考虑到“Hello World”是作为学习编程代码第一课，作为一个标准码农的我就决定沿袭这个传统，<br>从此开始自己的博客之旅。</p>
+<p><strong><em>Hello Hexo</em></strong></p>
+<p><strong><em>Hello World</em></strong></p>
+]]></content>
+      
+        <categories>
+            
+            <category> general </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> First </tag>
+            
+            <tag> Blog </tag>
+            
+        </tags>
+        
+    </entry>
+    
+  
+  
+</search>

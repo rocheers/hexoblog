@@ -1,0 +1,5 @@
+.deploy_heroku
+.idea
+.idea/*
+.DS_Store
+themes/anatole

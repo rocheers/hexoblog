@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>X space</title>
+  
+  <subtitle>Yuan Home</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://metayuan.com/"/>
+  <updated>2017-09-27T09:01:51.000Z</updated>
+  <id>http://metayuan.com/</id>
+  
+  <author>
+    <name>Yuan Zhang</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://metayuan.com/2017/09/26/hello-world/"/>
+    <id>http://metayuan.com/2017/09/26/hello-world/</id>
+    <published>2017-09-27T01:25:13.000Z</published>
+    <updated>2017-09-27T09:01:51.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;终于将个人博客搭建起来了……虽然听说Hexo搭建博客十分容易，但对于前端完全不了解的我，颇费了一番功夫。&lt;/p&gt;
+&lt;p&gt;Hexo初始化这个博
+      
+    
+    </summary>
+    
+      <category term="general" scheme="http://metayuan.com/categories/general/"/>
+    
+    
+      <category term="First" scheme="http://metayuan.com/tags/First/"/>
+    
+      <category term="Blog" scheme="http://metayuan.com/tags/Blog/"/>
+    
+  </entry>
+  
+</feed>
