@@ -16,7 +16,7 @@
 <li>静态内容部署采用的是global CDN方式，这样用户登录博客的时候会根据用户所在地选取最近的节点获取信息。</li>
 </ol>
 <p>除了这两点以外，Netlify的设置界面也做得十分简洁易用，相比Heroku而言，甚至连部署都更加简单，除了利用git部署，还可以直接把生成好的静态网页文件夹拖动到一个部署框内</p>
-<p><img src="./drag_deploy.png" alt="drag_deploy"></p>
+<p><img src="/images/drag_deploy.png" alt="drag_deploy"></p>
 ]]></content>
       
         <categories>
