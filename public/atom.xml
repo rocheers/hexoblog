@@ -5,9 +5,9 @@
   <subtitle>Yuan Home</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://metayuan.com/"/>
-  <updated>2017-09-27T09:01:51.000Z</updated>
-  <id>http://metayuan.com/</id>
+  <link href="http://yuannow.com/"/>
+  <updated>2017-09-29T01:52:48.000Z</updated>
+  <id>http://yuannow.com/</id>
   
   <author>
     <name>Yuan Zhang</name>
@@ -17,9 +17,40 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Migrated from Heroku to Netlify</title>
+    <link href="http://yuannow.com/2017/09/28/Netlify/"/>
+    <id>http://yuannow.com/2017/09/28/Netlify/</id>
+    <published>2017-09-29T00:25:25.000Z</published>
+    <updated>2017-09-29T01:52:48.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;之前学习ruby on rails的时候，开始接触的Heroku。这次部署个人博客，想着Heroku应该是个不错的选择吧，但试用了几天的Heroku之后，我决定还是转到其他地方部署我的blog，为什么呢？原因有二：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;免费的Heroku App，如果
+      
+    
+    </summary>
+    
+      <category term="general" scheme="http://yuannow.com/categories/general/"/>
+    
+    
+      <category term="Netlify" scheme="http://yuannow.com/tags/Netlify/"/>
+    
+      <category term="migrate" scheme="http://yuannow.com/tags/migrate/"/>
+    
+      <category term="Heroku" scheme="http://yuannow.com/tags/Heroku/"/>
+    
+      <category term="static site" scheme="http://yuannow.com/tags/static-site/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Hello World</title>
-    <link href="http://metayuan.com/2017/09/26/hello-world/"/>
-    <id>http://metayuan.com/2017/09/26/hello-world/</id>
+    <link href="http://yuannow.com/2017/09/26/hello-world/"/>
+    <id>http://yuannow.com/2017/09/26/hello-world/</id>
     <published>2017-09-27T01:25:13.000Z</published>
     <updated>2017-09-27T09:01:51.000Z</updated>
     
@@ -33,12 +64,12 @@
     
     </summary>
     
-      <category term="general" scheme="http://metayuan.com/categories/general/"/>
+      <category term="general" scheme="http://yuannow.com/categories/general/"/>
     
     
-      <category term="First" scheme="http://metayuan.com/tags/First/"/>
+      <category term="First" scheme="http://yuannow.com/tags/First/"/>
     
-      <category term="Blog" scheme="http://metayuan.com/tags/Blog/"/>
+      <category term="Blog" scheme="http://yuannow.com/tags/Blog/"/>
     
   </entry>
   
