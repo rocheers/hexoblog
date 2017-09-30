@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yuannow.com/"/>
-  <updated>2017-09-29T02:07:52.000Z</updated>
+  <updated>2017-09-30T04:59:22.000Z</updated>
   <id>http://yuannow.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>用Python在Hadoop上跑MapReduce</title>
+    <link href="http://yuannow.com/2017/09/29/Map-reduce-works-perfectly-with-Python/"/>
+    <id>http://yuannow.com/2017/09/29/Map-reduce-works-perfectly-with-Python/</id>
+    <published>2017-09-29T23:15:51.000Z</published>
+    <updated>2017-09-30T04:59:22.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;本文目的&quot;&gt;&lt;a href=&quot;#本文目的&quot; class=&quot;headerlink&quot; title=&quot;本文目的&quot;&gt;&lt;/a&gt;本文目的&lt;/h1&gt;&lt;p&gt;这篇文章主要会给大家介绍一下如何将Python和Hadoop结合起来工作。有接触过MapReduce的朋友都知道，Hadoo
+      
+    
+    </summary>
+    
+      <category term="Big Data" scheme="http://yuannow.com/categories/Big-Data/"/>
+    
+    
+      <category term="Hadoop" scheme="http://yuannow.com/tags/Hadoop/"/>
+    
+      <category term="Python" scheme="http://yuannow.com/tags/Python/"/>
+    
+      <category term="Docker" scheme="http://yuannow.com/tags/Docker/"/>
+    
+      <category term="MapReduce" scheme="http://yuannow.com/tags/MapReduce/"/>
+    
+  </entry>
   
   <entry>
     <title>Migrated from Heroku to Netlify</title>
