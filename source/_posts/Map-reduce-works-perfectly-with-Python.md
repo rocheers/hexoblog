@@ -21,6 +21,9 @@ categories:
 - [使用Docker在本地搭建Hadoop分布式集群](http://www.tashan10.com/yong-dockerda-jian-hadoopwei-fen-bu-shi-ji-qun/)
 
 ---
+
+<!--more-->
+
 # MapReduce in Python
 下面我就来看Python里如何实现mapper和reducer。
 ## mapper.py

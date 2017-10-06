@@ -9,7 +9,7 @@ description: Information -> Knowledge -> Wisdom
 author: Yuan Zhang
 avatar: /images/avatar.png
 favicon: /images/favicon.png
-language: zh
+language: zh-CN
 timezone: US/Pacific
 
 # URL
@@ -65,12 +65,15 @@ pagination_dir: page
 disqus_shortname: yuanhome
 
 # Extensions
-## Plugins: https://hexo.io/plugins/
-## Themes: https://hexo.io/themes/
+# plugins: hexo-math
 theme: material-flow
 search:
   path: search.xml
   field: post
+
+marked:
+  gfm: true
+  breaks: false
 
 autoprefixer:
   exclude:
