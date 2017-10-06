@@ -18,7 +18,7 @@
 <meta property="og:url" content="http://yuannow.com/archives/index.html">
 <meta property="og:site_name" content="X space">
 <meta property="og:description" content="Information -&amp;gt; Knowledge -&amp;gt; Wisdom">
-<meta property="og:locale" content="zh">
+<meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="X space">
 <meta name="twitter:description" content="Information -&amp;gt; Knowledge -&amp;gt; Wisdom">
@@ -150,6 +150,13 @@
             </div>
       
           <div class="archive-item archive-post mark">
+            <a href="/2017/10/02/Data-analysis-in-Python-by-Pandas/">
+              <time>10-02</time>
+              <span class="title"><span>Data analysis in Python by Pandas</span></span>
+            </a>
+          </div>
+      
+          <div class="archive-item archive-post mark">
             <a href="/2017/09/29/Map-reduce-works-perfectly-with-Python/">
               <time>09-29</time>
               <span class="title"><span>用Python在Hadoop上跑MapReduce</span></span>
@@ -211,6 +218,8 @@
     
         <li><a class="flat-box" href="/categories/Big-Data/"><div class='name'>Big Data</div><div class='badget'>1</div></a></li>
     
+        <li><a class="flat-box" href="/categories/Data-analysis/"><div class='name'>Data analysis</div><div class='badget'>1</div></a></li>
+    
         <li><a class="flat-box" href="/categories/general/"><div class='name'>general</div><div class='badget'>2</div></a></li>
     
     </ul>
@@ -222,7 +231,7 @@
 <div class="m_widget tagcloud">
     <div class="header">Tags</div>
     <div class='content'>
-        <a href="/tags/Blog/" style="font-size: 14px; color: #808080">Blog</a> <a href="/tags/Docker/" style="font-size: 14px; color: #808080">Docker</a> <a href="/tags/First/" style="font-size: 14px; color: #808080">First</a> <a href="/tags/Hadoop/" style="font-size: 14px; color: #808080">Hadoop</a> <a href="/tags/Heroku/" style="font-size: 14px; color: #808080">Heroku</a> <a href="/tags/MapReduce/" style="font-size: 14px; color: #808080">MapReduce</a> <a href="/tags/Netlify/" style="font-size: 14px; color: #808080">Netlify</a> <a href="/tags/Python/" style="font-size: 14px; color: #808080">Python</a> <a href="/tags/migrate/" style="font-size: 14px; color: #808080">migrate</a> <a href="/tags/static-site/" style="font-size: 14px; color: #808080">static site</a>
+        <a href="/tags/Blog/" style="font-size: 14px; color: #808080">Blog</a> <a href="/tags/Data-analysis/" style="font-size: 14px; color: #808080">Data analysis</a> <a href="/tags/Docker/" style="font-size: 14px; color: #808080">Docker</a> <a href="/tags/First/" style="font-size: 14px; color: #808080">First</a> <a href="/tags/Hadoop/" style="font-size: 14px; color: #808080">Hadoop</a> <a href="/tags/Heroku/" style="font-size: 14px; color: #808080">Heroku</a> <a href="/tags/MapReduce/" style="font-size: 14px; color: #808080">MapReduce</a> <a href="/tags/Netlify/" style="font-size: 14px; color: #808080">Netlify</a> <a href="/tags/Pandas/" style="font-size: 14px; color: #808080">Pandas</a> <a href="/tags/Python/" style="font-size: 20px; color: #000">Python</a> <a href="/tags/migrate/" style="font-size: 14px; color: #808080">migrate</a> <a href="/tags/static-site/" style="font-size: 14px; color: #808080">static site</a>
     </div>
 </div>
 
@@ -301,5 +310,20 @@
 <script src="/js/app.js"></script>
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

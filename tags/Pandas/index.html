@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   
-  <title>Links | X space</title>
+  <title>Tag: Pandas | X space</title>
   <meta name="description" content="Information -&gt; Knowledge -&gt; Wisdom" />
   <meta name="keywords" content="" />
   <meta name="HandheldFriendly" content="True" />
@@ -14,14 +14,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Information -&amp;gt; Knowledge -&amp;gt; Wisdom">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Links">
-<meta property="og:url" content="http://yuannow.com/links/index.html">
+<meta property="og:title" content="X space">
+<meta property="og:url" content="http://yuannow.com/tags/Pandas/index.html">
 <meta property="og:site_name" content="X space">
 <meta property="og:description" content="Information -&amp;gt; Knowledge -&amp;gt; Wisdom">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-09-30T05:17:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Links">
+<meta name="twitter:title" content="X space">
 <meta name="twitter:description" content="Information -&amp;gt; Knowledge -&amp;gt; Wisdom">
     
   <link href="https://fonts.googleapis.com/css?family=Inconsolata|Titillium+Web" rel="stylesheet">
@@ -133,47 +132,68 @@
   <div class="l_body">
     <div class='container clearfix'>
       <div class='l_main'>
-        <article id="page-" class="post white-box article-type-page" itemscope itemprop="blogPost">
-    <section class='meta'>
-        <h2 class="title">
-            <a href="/links/index.html">
-                Links
-            </a>
-        </h2>
-        <time>
-	  9月 29, 2017
-	</time>
         
-    </section>
-    
-        <section class="toc-wrapper">
-            
-        </section>
-        
-            <section class="article typo">
-                <div class="article-entry" itemprop="articleBody">
-                    
-                </div>
-                
+  <script>
+    window.subData= { title:'Tag : Pandas'}
+  </script>
 
-                        
-            </section>
-            
-                <section id="comments">
-                    <div id="disqus_thread"></div>
-
-                    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-                </section>
-                
+<section class="post-list">
+	
+    <div class='post-wrapper'>
+      <article class="post reveal">
+  <section class="meta">
     
+    <h2 class="title">
+      <a href="/2017/10/02/Data-analysis-in-Python-by-Pandas/">
+        Data analysis in Python by Pandas
+      </a>
+    </h2>
+    
+    <time>
+      10月 2, 2017
+    </time>
+		
+    
+    <div class='cats'>
+        <a href="/categories/Data-analysis/">Data analysis</a>
+    </div>
+
+  </section>
+  <section class="article typo">
+	  <p>Python在数据科学领域的应用真的是越来越普及，得益于Python相对来讲通俗易懂的语言风格，语法简单且容易入门的特性，给很多数据科学领域的朋友，减轻了一部分学习编程语言的繁重。<code>Pandas</code> + <code>NumPy</code> + <code>Matplotlib</code>，这三者的结合基本可以胜任任意简单的数据分析和可视化的任务。复杂一点的可能还会需要<code>SciPy</code>的帮助。</p>
+<h1 id="本文目的"><a href="#本文目的" class="headerlink" title="本文目的"></a>本文目的</h1><p>这次，我打算用一篇长文来记录一下自己是如何利用Pandas进行数据分析的。网上有很多的<code>Pandas</code>入门教程，因此我这里并不打算针对所有Pandas的基础操作描述的那么清楚，还是希望更多的表达一些对于数据分析的想法和实现。</p>
+<p>广义上，数据分析其实包含了从导入数据-&gt;清洗数据-&gt;<strong>分析数据</strong>-&gt;展示数据，这一从头到尾的流程。狭义上，数据分析指的就是中间分析数据这一块内容。本文按照广义上的数据分析的过程来一步步探讨。</p>
+<p>接下来我们就正式开始本次数据分析之旅。</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p>下面的这一段代码主要是包的调用和一些环境配置，<code>Seaborn</code>是也是一个plot包，可用来画出比<code>Matplotlib</code>更漂亮的图，它本身是基于<code>Matplotlib</code>设计的，对<code>NumPy</code>和<code>Pandas</code>都有很好的支持。这里我就不做过多解释了，对<code>Seaborn</code>有兴趣的朋友可以留言咨询或者自行探索。
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</div><div class="line"></div><div class="line">%matplotlib inline</div><div class="line"></div><div class="line">sns.set(rc=&#123;<span class="string">"figure.figsize"</span>: (<span class="number">10</span>, <span class="number">6.25</span>)&#125;)</div><div class="line">sns.set_style(<span class="string">"darkgrid"</span>)</div><div class="line">colors = [<span class="string">"windows blue"</span>, <span class="string">"amber"</span>, <span class="string">"faded green"</span>, <span class="string">"greyish"</span>, <span class="string">"dusty purple"</span>, <span class="string">"red violet"</span>, <span class="string">"marine"</span>, <span class="string">"jungle green"</span>, <span class="string">"chocolate brown"</span>, <span class="string">"dull pink"</span>, <span class="string">"reddish orange"</span>]</div><div class="line">sns.set_palette(sns.xkcd_palette(colors))</div></pre></td></tr></table></figure></p>
+<h2 id="导入数据"><a href="#导入数据" class="headerlink" title="导入数据"></a>导入数据</h2><p>我这次用的数据是IGN上近20年来的各种平台的游戏，来源于<a href="https://www.kaggle.com/egrinstein/20-years-of-games" target="_blank" rel="external">这里</a>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">reviews = pd.read_csv(<span class="string">"ign.csv"</span>)</div></pre></td></tr></table></figure>
+<p>数据读入之后，我们来看一下这里都有些什么内容。
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">reviews.head()</div></pre></td></tr></table></figure></p>
+
+    
+	  <div class="readmore">
+      <a href="/2017/10/02/Data-analysis-in-Python-by-Pandas/">Read More</a>
+    </div>
+    
+    
+    
+	  <div class="full-width auto-padding tags">
+      
+        <a href="/tags/Python/">Python</a>
+      
+        <a href="/tags/Pandas/">Pandas</a>
+      
+        <a href="/tags/Data-analysis/">Data analysis</a>
+      
+	  </div>
+    
+  </section>
 </article>
-<script>
-    window.subData = {
-        title: 'Links',
-        tools: true
-    }
+    </div>
+  
+</section>
 
-</script>
 
       </div>
       <aside class='l_side'>
@@ -265,11 +285,6 @@
   
     <script>
         var disqus_shortname = 'yuanhome';
-        
-            var disqus_config = function () {
-                this.page.url = 'http://yuannow.com/links/index.html';
-                this.page.identifier = 'links/index.md';
-            };
         
         (function() { // DON'T EDIT BELOW THIS LINE
             var d = document,

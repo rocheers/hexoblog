@@ -18,7 +18,7 @@
 <meta property="og:url" content="http://yuannow.com/tags/migrate/index.html">
 <meta property="og:site_name" content="X space">
 <meta property="og:description" content="Information -&amp;gt; Knowledge -&amp;gt; Wisdom">
-<meta property="og:locale" content="zh">
+<meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="X space">
 <meta name="twitter:description" content="Information -&amp;gt; Knowledge -&amp;gt; Wisdom">
@@ -150,7 +150,7 @@
     </h2>
     
     <time>
-      Sep 28, 2017
+      9月 28, 2017
     </time>
 		
     
@@ -165,15 +165,11 @@
 <li>免费的Heroku App，如果搁置时间长了一直无人访问的话，再次访问是需要一定时间等待激活的，就像是电脑睡眠了等着叫醒一样。付费的话太贵，对于只是搭载个人博客而言不太划算；</li>
 <li>Heroku服务器是在美国和欧洲，而且一个App只能存在在某一个区域，不可变。所以对于国内的朋友，登录我的博客有时会有不小的延迟，虽然对于一个静态网站，本来也无需很快的响应速度，但配合第一条，这个时间有时真的让人无语……</li>
 </ol>
-<p>那之所以选择Netlify也是有两个原因：</p>
-<ol>
-<li>不存在Heroku的第一个问题；</li>
-<li>静态内容部署采用的是global CDN方式，这样用户登录博客的时候会根据用户所在地选取最近的节点获取信息。</li>
-</ol>
-<p>除了这两点以外，Netlify的设置界面也做得十分简洁易用，相比Heroku而言，甚至连部署都更加简单，除了利用git部署，还可以直接把生成好的静态网页文件夹拖动到一个部署框内</p>
-<p><img src="/images/drag_deploy.png" alt="drag_deploy"></p>
 
-
+    
+	  <div class="readmore">
+      <a href="/2017/09/28/Netlify/">Read More</a>
+    </div>
     
     
     
@@ -231,6 +227,8 @@
     
         <li><a class="flat-box" href="/categories/Big-Data/"><div class='name'>Big Data</div><div class='badget'>1</div></a></li>
     
+        <li><a class="flat-box" href="/categories/Data-analysis/"><div class='name'>Data analysis</div><div class='badget'>1</div></a></li>
+    
         <li><a class="flat-box" href="/categories/general/"><div class='name'>general</div><div class='badget'>2</div></a></li>
     
     </ul>
@@ -242,7 +240,7 @@
 <div class="m_widget tagcloud">
     <div class="header">Tags</div>
     <div class='content'>
-        <a href="/tags/Blog/" style="font-size: 14px; color: #808080">Blog</a> <a href="/tags/Docker/" style="font-size: 14px; color: #808080">Docker</a> <a href="/tags/First/" style="font-size: 14px; color: #808080">First</a> <a href="/tags/Hadoop/" style="font-size: 14px; color: #808080">Hadoop</a> <a href="/tags/Heroku/" style="font-size: 14px; color: #808080">Heroku</a> <a href="/tags/MapReduce/" style="font-size: 14px; color: #808080">MapReduce</a> <a href="/tags/Netlify/" style="font-size: 14px; color: #808080">Netlify</a> <a href="/tags/Python/" style="font-size: 14px; color: #808080">Python</a> <a href="/tags/migrate/" style="font-size: 14px; color: #808080">migrate</a> <a href="/tags/static-site/" style="font-size: 14px; color: #808080">static site</a>
+        <a href="/tags/Blog/" style="font-size: 14px; color: #808080">Blog</a> <a href="/tags/Data-analysis/" style="font-size: 14px; color: #808080">Data analysis</a> <a href="/tags/Docker/" style="font-size: 14px; color: #808080">Docker</a> <a href="/tags/First/" style="font-size: 14px; color: #808080">First</a> <a href="/tags/Hadoop/" style="font-size: 14px; color: #808080">Hadoop</a> <a href="/tags/Heroku/" style="font-size: 14px; color: #808080">Heroku</a> <a href="/tags/MapReduce/" style="font-size: 14px; color: #808080">MapReduce</a> <a href="/tags/Netlify/" style="font-size: 14px; color: #808080">Netlify</a> <a href="/tags/Pandas/" style="font-size: 14px; color: #808080">Pandas</a> <a href="/tags/Python/" style="font-size: 20px; color: #000">Python</a> <a href="/tags/migrate/" style="font-size: 14px; color: #808080">migrate</a> <a href="/tags/static-site/" style="font-size: 14px; color: #808080">static site</a>
     </div>
 </div>
 
@@ -321,5 +319,20 @@
 <script src="/js/app.js"></script>
 
   <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
