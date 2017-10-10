@@ -18,21 +18,25 @@ Python在数据科学领域的应用真的是越来越普及，得益于Python�
 
 接下来我们就正式开始本次数据分析之旅。
 
+<!--more-->
+
+---
 # 正文
 下面的这一段代码主要是包的调用和一些环境配置，`Seaborn`是也是一个plot包，可用来画出比`Matplotlib`更漂亮的图，它本身是基于`Matplotlib`设计的，对`NumPy`和`Pandas`都有很好的支持。这里我就不做过多解释了，对`Seaborn`有兴趣的朋友可以留言咨询或者自行探索。
 ```python
 import pandas as pd
 from matplotlib import pyplot as plt
 import seaborn as sns
-
+    
 %matplotlib inline
-
+    
 sns.set(rc={"figure.figsize": (10, 6.25)})
 sns.set_style("darkgrid")
 colors = ["windows blue", "amber", "faded green", "greyish", "dusty purple", "red violet", "marine", "jungle green", "chocolate brown", "dull pink", "reddish orange"]
 sns.set_palette(sns.xkcd_palette(colors))
 ```
 
+---
 ## 导入数据
 我这次用的数据是IGN上近20年来的各种平台的游戏，来源于[这里](https://www.kaggle.com/egrinstein/20-years-of-games)。
 
@@ -44,8 +48,6 @@ reviews = pd.read_csv("ign.csv")
 ```python
 reviews.head()
 ```
-
-<!--more-->
 
 <div>
 <table class="blueTable">
@@ -161,6 +163,7 @@ reviews.shape
 
 看来我们这次的数据里一共`18625`条数据，一共`11`列属性。
 
+---
 ## 清洗数据
 源数据导入后一般来说是不能直接使用的，需要进行一定范围的数据清洗，不过本次的数据基本不需要清洗，收集这个数据的_Eric Grinstein_已经对数据进行了清洗工作。不过这里我们仍需要做一点简单的清洗工作，去除一些我们不需要的内容。
 
@@ -275,6 +278,7 @@ reviews.head()
 </table>
 </div>
 
+---
 ## 分析数据
 数据清洗之后，其实就是分析过程的正式开始。在开始分析过程之前，先说点题外话。我本身对于游戏是很热爱的，从小到大，游戏机，掌机，PC，也拥有过不少的游戏平台。从和父母斗智斗勇中各种争取时间玩的红白机，小霸王学习机，到后来可以躲在被子里玩的GameBoy，但偶尔还得探出头担心父母进屋里发现自己的小秘密；再往后的世嘉，所以又不得不和父母软磨硬泡恳求游戏时间。直至家里第一台PC的出现，基本其他的游戏平台就很少碰了，除了后来的PSP，那是我从GameBoy之后时隔很多年再次拿起掌机玩游戏。要说起游戏，游戏平台，游戏的历史，真的说上三天三夜也说不完，其实这也是我为什么选择这么IGN的这个数据作为数据分析的数据来源。我也很想看看这20年来电子游戏产业的发展和趋势。
 
@@ -423,7 +427,7 @@ fil
 ```python
 for platform in platforms[1:]:
     fil |= reviews["platform"] == platform
-
+    
 filtered_reviews = reviews[fil]
 ```
 
@@ -1248,6 +1252,7 @@ filtered_reviews
 <p>13979 rows × 10 columns</p>
 </div>
 
+---
 ## 展示数据
 现在已经有了前十平台的数据，需要思考的就是如何来呈现每个平台的游戏质量呢？当然可以用每个平台的`score`的平均值来对比，但未免有点单薄了。数据属性中有一列是`score_phrase`，用一个单词来形容当前游戏的好坏，与`score`直接挂钩，用这个来展示应该会更容易理解和分析。
 
@@ -1262,6 +1267,7 @@ sns.countplot(x="platform", hue="score_phrase", data=filtered_reviews, palette=s
 
 所以，下面的工作，我要继续细化一下数据分析和展示的部分。
 
+---
 ## 进一步分析与展示数据
 因为原先划分的`score_phrase`太多了，我决定将它们重新划为三个部分：好于`Good`的，差于`Okay`的，剩下的就是中间部分。我的这个标准可能比较严格，在我看来，评分`8.0`以上的才算的上是优秀的作品，也就是高于`Good`的；至于那些评分低于`6.0`的，也就是还不到`Okay`的，算作差劲也不算失礼吧。
 
@@ -1270,7 +1276,7 @@ all_score_phrases = set(reviews["score_phrase"].unique())
 bt_good = set(['Great', 'Amazing', 'Masterpiece'])
 average = set(['Good', 'Okay'])
 wt_okay = all_score_phrases - bt_good - average
-
+    
 def category_score_phrase(value):
     if value in bt_good:
         return "Better than Good"
@@ -1278,7 +1284,7 @@ def category_score_phrase(value):
         return "Worse than Okay"
     else:
         return "Average"
-
+        
 sizes = filtered_reviews["score_phrase"].apply(category_score_phrase).value_counts()
 explode = (0, 0.1, 0)
 plt.pie(sizes, labels=sizes.index, explode=explode, autopct='%1.2f%%', shadow=True, startangle=90);
@@ -2015,12 +2021,14 @@ wt_okay_perc = [i / j * 100 for i, j in zip(count_df["count"][2::3], totals)]
 
 ```python
 f, ax = plt.subplots(1)
+    
 ax.bar(bar_left, 
        wt_okay_perc,
        label="Worst than Okay",
        alpha=0.9,
        width=bar_width,
        edgecolor="white")
+       
 ax.bar(bar_left,
        ave_perc,
        bottom=wt_okay_perc,
@@ -2028,6 +2036,7 @@ ax.bar(bar_left,
        alpha=0.9,
        width=bar_width,
        edgecolor="white")
+       
 ax.bar(bar_left,
        bt_good_perc,
        bottom=[i+j for i, j in zip(wt_okay_perc, ave_perc)],
@@ -2035,6 +2044,7 @@ ax.bar(bar_left,
        alpha=0.9,
        width=bar_width,
        edgecolor="white")
+       
 plt.xticks(tick_pos, set(count_df["platform"]))
 ax.set_ylabel("Percentage")
 ax.set_xlabel("")
@@ -2047,11 +2057,13 @@ plt.show()
 
 我并没有直接把具体百分比的数值标记在上面，不过通过直观的图形依然可以看到一些信息。从图中可以看出来，相对来说，`PlayStation`，`PlayStation2`，`Wii`，`PC`和`Nintendo DS`的游戏质量都是很不错的，高质量游戏占比高，且低质量游戏占比低。`PlayStation3`虽然低质量游戏占比很小，但是高品质游戏也不算很多。`iPhone`和`Xbox`的表现算是最差的了，低质量游戏占比分属最高的一二，高品质游戏也是最低的两个平台。其实`iPhone`是这样的倒是不意外了，因为毕竟`iPhone`平台的起点相对于其他的平台要低很多，基本上三五个人，甚至一个人做出的游戏都有，这样很难保证游戏兼顾趣味性和剧情或者其他方面。在后期维护上面肯定也要比大公司开发的游戏差了很多。遗憾的是`Xbox`竟然也有如此差劲的表现，着实令我难以理解。
 
-# 结尾
+---
+# 总结
 至此，我打算分析的内容就呈现完了，这就是我个人拿到数据之后一个简单的想法，然后试着去将这个想法用数据分析的方法展现出来，供自己去理解。后面我还会对这个数据集进一步的分析，比如去探讨一下年份和分数的关系，游戏类别和分数的关系。希望这篇文章可以起到抛砖引玉的作用，能让各位看完之后对于如何开始分析一份数据有自己的想法。
 
 各位看官对于本文有任何不明白的地方，欢迎提问，也欢迎指正和建议。
 
+---
 # Related Links
 1. [Pandas Tutorial: Data analysis with Python: Part 1](https://www.dataquest.io/blog/pandas-python-tutorial/)
 2. [Pandas Tutorial: Data analysis with Python: Part 2](https://www.dataquest.io/blog/pandas-tutorial-python-2/)

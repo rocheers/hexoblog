@@ -13,6 +13,8 @@ categories:
 # 本文目的
 这篇文章主要会给大家介绍一下如何将Python和Hadoop结合起来工作。有接触过MapReduce的朋友都知道，Hadoop的运行环境主要是Java，一般介绍Hadoop和MapReduce的教程和书籍也都是基于Java的。因为我个人对Java并不太感冒，一直以来钟情于Python的简洁实用理念，同时又对MapReduce有兴趣，因此萌生了Python的MapReduce结合的想法。本文也是我经过Google学习他人教程，以及自己实际练习得出来的一些心得，在此分享给各位。
 
+<!--more-->
+
 ---
 # 环境搭建
 首先，你需要有个Hadoop的运行环境，还有Python运行环境。本文主要目的不在分享安装环境，因此有从零开始的朋友，可以先去百度或者Google上搜一下相关教程。下面分享几个相关的教程：
@@ -21,9 +23,6 @@ categories:
 - [使用Docker在本地搭建Hadoop分布式集群](http://www.tashan10.com/yong-dockerda-jian-hadoopwei-fen-bu-shi-ji-qun/)
 
 ---
-
-<!--more-->
-
 # MapReduce in Python
 下面我就来看Python里如何实现mapper和reducer。
 ## mapper.py

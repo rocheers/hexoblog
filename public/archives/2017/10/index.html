@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  
-  <title>Archives: 2017/10 | X space</title>
-  <meta name="description" content="Information -&gt; Knowledge -&gt; Wisdom" />
-  <meta name="keywords" content="" />
-  <meta name="HandheldFriendly" content="True" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="shortcut icon" href="/images/favicon.png">
-  <link rel="alternate" href="/atom.xml" title="X space">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Information -&amp;gt; Knowledge -&amp;gt; Wisdom">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <title>Archives: 2017/10 | X space</title>
+    <meta name="description" content="Information -&gt; Knowledge -&gt; Wisdom" />
+    <meta name="keywords" content="" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" href="/images/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="X space">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Information -&amp;gt; Knowledge -&amp;gt; Wisdom">
 <meta property="og:type" content="website">
 <meta property="og:title" content="X space">
 <meta property="og:url" content="http://yuannow.com/archives/2017/10/index.html">
@@ -23,17 +23,26 @@
 <meta name="twitter:title" content="X space">
 <meta name="twitter:description" content="Information -&amp;gt; Knowledge -&amp;gt; Wisdom">
     
-  <link href="https://fonts.googleapis.com/css?family=Inconsolata|Titillium+Web" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-  <link href='//cdn.bootcss.com/node-waves/0.7.5/waves.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="/style.css">
-  <script>
-    function setLoadingBarProgress(num) {
-      document.getElementById('loading-bar').style.width=num+"%";
-    }
-  </script>
-</head>
-
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata|Titillium+Web" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href='//cdn.bootcss.com/node-waves/0.7.5/waves.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/style.css">
+    <script>
+      function setLoadingBarProgress(num) {
+        document.getElementById('loading-bar').style.width=num+"%";
+      }
+    </script>
+    
+      <!-- Global Site Tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107727758-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-107727758-1');
+      </script>
+    
+  </head>
 <body>
   <div id="loading-bar-wrapper">
   <div id="loading-bar"></div>
@@ -145,6 +154,53 @@
   <section class="meta">
     
     <h2 class="title">
+      <a href="/2017/10/09/Implement-Search-Auto-Complete-by-Python-Hadoop/">
+        用Python在Hadoop上实现搜索自动补全
+      </a>
+    </h2>
+    
+    <time>
+      10月 9, 2017
+    </time>
+		
+    
+    <div class='cats'>
+        <a href="/categories/Big-Data/">Big Data</a>
+    </div>
+
+  </section>
+  <section class="article typo">
+	  <p><img src="/images/autocomplete/autocomplete.png" alt="search autocomplete">
+记得很早的时候，刚开始接触搜索引擎，那时候Google还没有被墙，百度也是刚刚诞生没多久，无论我在输入框内输入什么，只是显示我输入的内容，并没有任何联想功能提示我接下来可能匹配的内容。有时候想找个东西，可就是死活想不起来准确的名字或者描述方式，这个时候搜索引擎也帮不了你，你只能变着法的尝试各种输入，来寻求最终你想要的结果。后来搜索引擎加入了联想功能，这着实是一大进步，极大地提高了搜索效率。有的时候，我们对于想查询的某一问题的提问方式是很模糊的，这个时候当你输入了一些关键词，发现搜索引擎会根据你的输入给你一些后续内容的建议，会让你更容易的找到自己想要的答案。</p>
+<h1 id="本文目的"><a href="#本文目的" class="headerlink" title="本文目的"></a>本文目的</h1><p>上一篇我在《用Python在Hadoop上跑MapReduce》中介绍了一些关于如何利用<code>Hadoop Streaming</code>运行Python版MapReduce的简单操作，如何实现词频统计就像是MapReduce中的<em>Hello World</em>，不过做完了入门教程，为了深入学习，还得需要更多的练习。</p>
+<p>在这篇文章中，我将会带各位实现一个很简单的搜索联想功能，比较粗糙，但是看起来也挺像那么回事的~</p>
+
+    
+	  <div class="readmore">
+      <a href="/2017/10/09/Implement-Search-Auto-Complete-by-Python-Hadoop/">Read More</a>
+    </div>
+    
+    
+    
+	  <div class="full-width auto-padding tags">
+      
+        <a href="/tags/Python/">Python</a>
+      
+        <a href="/tags/Hadoop/">Hadoop</a>
+      
+        <a href="/tags/MapReduce/">MapReduce</a>
+      
+	  </div>
+    
+  </section>
+</article>
+    </div>
+  
+    <div class='post-wrapper'>
+      <article class="post reveal">
+  <section class="meta">
+    
+    <h2 class="title">
       <a href="/2017/10/02/Data-analysis-in-Python-by-Pandas/">
         Data analysis in Python by Pandas
       </a>
@@ -165,12 +221,6 @@
 <h1 id="本文目的"><a href="#本文目的" class="headerlink" title="本文目的"></a>本文目的</h1><p>这次，我打算用一篇长文来记录一下自己是如何利用Pandas进行数据分析的。网上有很多的<code>Pandas</code>入门教程，因此我这里并不打算针对所有Pandas的基础操作描述的那么清楚，还是希望更多的表达一些对于数据分析的想法和实现。</p>
 <p>广义上，数据分析其实包含了从导入数据-&gt;清洗数据-&gt;<strong>分析数据</strong>-&gt;展示数据，这一从头到尾的流程。狭义上，数据分析指的就是中间分析数据这一块内容。本文按照广义上的数据分析的过程来一步步探讨。</p>
 <p>接下来我们就正式开始本次数据分析之旅。</p>
-<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p>下面的这一段代码主要是包的调用和一些环境配置，<code>Seaborn</code>是也是一个plot包，可用来画出比<code>Matplotlib</code>更漂亮的图，它本身是基于<code>Matplotlib</code>设计的，对<code>NumPy</code>和<code>Pandas</code>都有很好的支持。这里我就不做过多解释了，对<code>Seaborn</code>有兴趣的朋友可以留言咨询或者自行探索。
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</div><div class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</div><div class="line"></div><div class="line">%matplotlib inline</div><div class="line"></div><div class="line">sns.set(rc=&#123;<span class="string">"figure.figsize"</span>: (<span class="number">10</span>, <span class="number">6.25</span>)&#125;)</div><div class="line">sns.set_style(<span class="string">"darkgrid"</span>)</div><div class="line">colors = [<span class="string">"windows blue"</span>, <span class="string">"amber"</span>, <span class="string">"faded green"</span>, <span class="string">"greyish"</span>, <span class="string">"dusty purple"</span>, <span class="string">"red violet"</span>, <span class="string">"marine"</span>, <span class="string">"jungle green"</span>, <span class="string">"chocolate brown"</span>, <span class="string">"dull pink"</span>, <span class="string">"reddish orange"</span>]</div><div class="line">sns.set_palette(sns.xkcd_palette(colors))</div></pre></td></tr></table></figure></p>
-<h2 id="导入数据"><a href="#导入数据" class="headerlink" title="导入数据"></a>导入数据</h2><p>我这次用的数据是IGN上近20年来的各种平台的游戏，来源于<a href="https://www.kaggle.com/egrinstein/20-years-of-games" target="_blank" rel="external">这里</a>。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">reviews = pd.read_csv(<span class="string">"ign.csv"</span>)</div></pre></td></tr></table></figure>
-<p>数据读入之后，我们来看一下这里都有些什么内容。
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">reviews.head()</div></pre></td></tr></table></figure></p>
 
     
 	  <div class="readmore">
@@ -230,7 +280,7 @@
     
     <ul class="entry">
     
-        <li><a class="flat-box" href="/categories/Big-Data/"><div class='name'>Big Data</div><div class='badget'>1</div></a></li>
+        <li><a class="flat-box" href="/categories/Big-Data/"><div class='name'>Big Data</div><div class='badget'>2</div></a></li>
     
         <li><a class="flat-box" href="/categories/Data-analysis/"><div class='name'>Data analysis</div><div class='badget'>1</div></a></li>
     
@@ -245,7 +295,7 @@
 <div class="m_widget tagcloud">
     <div class="header">Tags</div>
     <div class='content'>
-        <a href="/tags/Blog/" style="font-size: 14px; color: #808080">Blog</a> <a href="/tags/Data-analysis/" style="font-size: 14px; color: #808080">Data analysis</a> <a href="/tags/Docker/" style="font-size: 14px; color: #808080">Docker</a> <a href="/tags/First/" style="font-size: 14px; color: #808080">First</a> <a href="/tags/Hadoop/" style="font-size: 14px; color: #808080">Hadoop</a> <a href="/tags/Heroku/" style="font-size: 14px; color: #808080">Heroku</a> <a href="/tags/MapReduce/" style="font-size: 14px; color: #808080">MapReduce</a> <a href="/tags/Netlify/" style="font-size: 14px; color: #808080">Netlify</a> <a href="/tags/Pandas/" style="font-size: 14px; color: #808080">Pandas</a> <a href="/tags/Python/" style="font-size: 20px; color: #000">Python</a> <a href="/tags/migrate/" style="font-size: 14px; color: #808080">migrate</a> <a href="/tags/static-site/" style="font-size: 14px; color: #808080">static site</a>
+        <a href="/tags/Blog/" style="font-size: 14px; color: #808080">Blog</a> <a href="/tags/Data-analysis/" style="font-size: 14px; color: #808080">Data analysis</a> <a href="/tags/Docker/" style="font-size: 14px; color: #808080">Docker</a> <a href="/tags/First/" style="font-size: 14px; color: #808080">First</a> <a href="/tags/Hadoop/" style="font-size: 17px; color: #404040">Hadoop</a> <a href="/tags/Heroku/" style="font-size: 14px; color: #808080">Heroku</a> <a href="/tags/MapReduce/" style="font-size: 17px; color: #404040">MapReduce</a> <a href="/tags/Netlify/" style="font-size: 14px; color: #808080">Netlify</a> <a href="/tags/Pandas/" style="font-size: 14px; color: #808080">Pandas</a> <a href="/tags/Python/" style="font-size: 20px; color: #000">Python</a> <a href="/tags/migrate/" style="font-size: 14px; color: #808080">migrate</a> <a href="/tags/static-site/" style="font-size: 14px; color: #808080">static site</a>
     </div>
 </div>
 

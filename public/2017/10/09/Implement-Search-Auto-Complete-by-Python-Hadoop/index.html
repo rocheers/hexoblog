@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <title>用Python在Hadoop上实现搜索自动补全 | X space</title>
+    <meta name="description" content="Information -&gt; Knowledge -&gt; Wisdom" />
+    <meta name="keywords" content="" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" href="/images/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="X space">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="记得很早的时候，刚开始接触搜索引擎，那时候Google还没有被墙，百度也是刚刚诞生没多久，无论我在输入框内输入什么，只是显示我输入的内容，并没有任何联想功能提示我接下来可能匹配的内容。有时候想找个东西，可就是死活想不起来准确的名字或者描述方式，这个时候搜索引擎也帮不了你，你只能变着法的尝试各种输入，来寻求最终你想要的结果。后来搜索引擎加入了联想功能，这着实是一大进步，极大地提高了搜索效率。有的时">
+<meta name="keywords" content="Python,Hadoop,MapReduce">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Python在Hadoop上实现搜索自动补全">
+<meta property="og:url" content="http://yuannow.com/2017/10/09/Implement-Search-Auto-Complete-by-Python-Hadoop/index.html">
+<meta property="og:site_name" content="X space">
+<meta property="og:description" content="记得很早的时候，刚开始接触搜索引擎，那时候Google还没有被墙，百度也是刚刚诞生没多久，无论我在输入框内输入什么，只是显示我输入的内容，并没有任何联想功能提示我接下来可能匹配的内容。有时候想找个东西，可就是死活想不起来准确的名字或者描述方式，这个时候搜索引擎也帮不了你，你只能变着法的尝试各种输入，来寻求最终你想要的结果。后来搜索引擎加入了联想功能，这着实是一大进步，极大地提高了搜索效率。有的时">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://yuannow.com/images/autocomplete/autocomplete.png">
+<meta property="og:image" content="http://yuannow.com/images/autocomplete/database.png">
+<meta property="og:image" content="http://yuannow.com/images/autocomplete/ggif.gif">
+<meta property="og:updated_time" content="2017-10-10T09:12:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用Python在Hadoop上实现搜索自动补全">
+<meta name="twitter:description" content="记得很早的时候，刚开始接触搜索引擎，那时候Google还没有被墙，百度也是刚刚诞生没多久，无论我在输入框内输入什么，只是显示我输入的内容，并没有任何联想功能提示我接下来可能匹配的内容。有时候想找个东西，可就是死活想不起来准确的名字或者描述方式，这个时候搜索引擎也帮不了你，你只能变着法的尝试各种输入，来寻求最终你想要的结果。后来搜索引擎加入了联想功能，这着实是一大进步，极大地提高了搜索效率。有的时">
+<meta name="twitter:image" content="http://yuannow.com/images/autocomplete/autocomplete.png">
+    
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata|Titillium+Web" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href='//cdn.bootcss.com/node-waves/0.7.5/waves.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/style.css">
+    <script>
+      function setLoadingBarProgress(num) {
+        document.getElementById('loading-bar').style.width=num+"%";
+      }
+    </script>
+    
+      <!-- Global Site Tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107727758-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-107727758-1');
+      </script>
+    
+  </head>
+<body>
+  <div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+
+
+  <script>setLoadingBarProgress(20)</script> 
+  <header class="l_header">
+	<div class='wrapper'>
+		<div class="nav-main container container--flex">
+			<a class="logo flat-box" href='/' >
+				X space
+			</a>
+			<div class='menu'>
+				<ul class='h-list'>
+					
+						<li>
+							<a class='flat-box nav-home' href='/'>
+								Home
+							</a>
+						</li>
+					
+						<li>
+							<a class='flat-box nav-archives' href='/archives'>
+								Archives
+							</a>
+						</li>
+					
+						<li>
+							<a class='flat-box nav-gallery' href='/gallary'>
+								Gallery
+							</a>
+						</li>
+					
+						<li>
+							<a class='flat-box nav-about' href='/about'>
+								About
+							</a>
+						</li>
+					
+				</ul>
+				<div class='underline'></div>
+			</div>
+			
+				<div class="m_search">
+					<form name="searchform" class="form u-search-form">
+						<input type="text" class="input u-search-input" placeholder="Search" />
+						<span class="icon icon-search"></span>
+					</form>
+				</div>
+			
+			<ul class='switcher h-list'>
+				
+					<li class='s-search'><a href='javascript:void(0)'><span class="icon icon-search flat-box"></span></a></li>
+				
+				<li class='s-menu'><a href='javascript:void(0)'><span class="icon icon-menu flat-box"></span></a></li>
+			</ul>
+		</div>
+		
+		<div class='nav-sub container container--flex'>
+			<a class="logo" class="flat-box" href='javascript:void(0)'>
+				Word of Forks
+			</a>
+
+			<ul class='switcher h-list'>
+				<li class='s-comment'><a href='javascript:void(0)'><span class="icon icon-chat_bubble_outline flat-box"></span></a></li>
+				<li class='s-top'><a href='javascript:void(0)'><span class="icon icon-arrow_upward flat-box"></span></a></li>
+				<li class='s-toc'><a href='javascript:void(0)'><span class="icon icon-format_list_numbered flat-box"></span></a></li>
+			</ul>
+		</div>
+	</div>
+</header>
+<aside class="menu-phone">
+	<nav>
+		
+			<a href="/" class="nav-home nav">
+				Home
+			</a>
+		
+			<a href="/archives" class="nav-archives nav">
+				Archives
+			</a>
+		
+			<a href="/gallary" class="nav-gallery nav">
+				Gallery
+			</a>
+		
+			<a href="/about" class="nav-about nav">
+				About
+			</a>
+		
+	</nav>
+</aside>
+
+    <script>setLoadingBarProgress(40);</script>
+  <div class="l_body">
+    <div class='container clearfix'>
+      <div class='l_main'>
+        <article id="post-Implement-Search-Auto-Complete-by-Python-Hadoop" class="post white-box article-type-post" itemscope itemprop="blogPost">
+    <section class='meta'>
+        <h2 class="title">
+            <a href="/2017/10/09/Implement-Search-Auto-Complete-by-Python-Hadoop/">
+                用Python在Hadoop上实现搜索自动补全
+            </a>
+        </h2>
+        <time>
+	  10月 9, 2017
+	</time>
+        
+    
+    <div class='cats'>
+        <a href="/categories/Big-Data/">Big Data</a>
+    </div>
+
+    </section>
+    
+        <section class="toc-wrapper">
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#本文目的"><span class="toc-number">1.</span> <span class="toc-text">本文目的</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#正文"><span class="toc-number">2.</span> <span class="toc-text">正文</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#N-Gram"><span class="toc-number">2.1.</span> <span class="toc-text">N-Gram</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce实现"><span class="toc-number">2.2.</span> <span class="toc-text">MapReduce实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#N-Gram模型构建"><span class="toc-number">2.2.1.</span> <span class="toc-text">N-Gram模型构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#N-Gram测试结果"><span class="toc-number">2.2.2.</span> <span class="toc-text">N-Gram测试结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#构建预测概率的模型"><span class="toc-number">2.2.3.</span> <span class="toc-text">构建预测概率的模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#预测概率的测试结果"><span class="toc-number">2.2.4.</span> <span class="toc-text">预测概率的测试结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行在Hadoop上"><span class="toc-number">2.2.5.</span> <span class="toc-text">运行在Hadoop上</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#导入数据库"><span class="toc-number">2.3.</span> <span class="toc-text">导入数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#展示结果"><span class="toc-number">2.4.</span> <span class="toc-text">展示结果</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Related-Links"><span class="toc-number">4.</span> <span class="toc-text">Related Links</span></a></li></ol>
+        </section>
+        
+            <section class="article typo">
+                <div class="article-entry" itemprop="articleBody">
+                    <p><img src="/images/autocomplete/autocomplete.png" alt="search autocomplete">
+记得很早的时候，刚开始接触搜索引擎，那时候Google还没有被墙，百度也是刚刚诞生没多久，无论我在输入框内输入什么，只是显示我输入的内容，并没有任何联想功能提示我接下来可能匹配的内容。有时候想找个东西，可就是死活想不起来准确的名字或者描述方式，这个时候搜索引擎也帮不了你，你只能变着法的尝试各种输入，来寻求最终你想要的结果。后来搜索引擎加入了联想功能，这着实是一大进步，极大地提高了搜索效率。有的时候，我们对于想查询的某一问题的提问方式是很模糊的，这个时候当你输入了一些关键词，发现搜索引擎会根据你的输入给你一些后续内容的建议，会让你更容易的找到自己想要的答案。</p>
+<h1 id="本文目的"><a href="#本文目的" class="headerlink" title="本文目的"></a>本文目的</h1><p>上一篇我在《用Python在Hadoop上跑MapReduce》中介绍了一些关于如何利用<code>Hadoop Streaming</code>运行Python版MapReduce的简单操作，如何实现词频统计就像是MapReduce中的<em>Hello World</em>，不过做完了入门教程，为了深入学习，还得需要更多的练习。</p>
+<p>在这篇文章中，我将会带各位实现一个很简单的搜索联想功能，比较粗糙，但是看起来也挺像那么回事的~</p>
+<a id="more"></a>
+<hr>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><p>为了实现<code>autocomplete</code>，首先需要搞清楚它背后的原理，搜索引擎究竟是根据什么来给出提示的？比如我输入一个<code>autocomplete</code>之后，为什么后面推荐的是<em>python</em>，<em>algorithm</em>之类的，而不是<em>Naruto</em>，<em>One Piece</em>这些呢？</p>
+<p>无论是百度还是谷歌，其实在大家用它们的搜索引擎收集你需要的信息的时候，它们也同样在收集信息。它们收集了大量的用户搜索的输入信息，同时还在抓取各种网页内容的信息，简单来说，搜索引擎通过某种算法将各种收集到的资料综合到一起，最终给出了一个输入联想的列表，这就是自动补全功能。</p>
+<p>私下里作为学习MapReduce的项目，我们肯定不可能去试图实现真正的搜索引擎。不过做一个简陋版的，帮助自己理解<code>autocomplete</code>背后的实现原理，以及如何利用MapReduce来实现，也是足够的。</p>
+<hr>
+<h2 id="N-Gram"><a href="#N-Gram" class="headerlink" title="N-Gram"></a>N-Gram</h2><p>对于autocomplete背后实现的原理，很重要的一点就是N-Gram，<a href="http://blog.sciencenet.cn/blog-713101-797384.html" target="_blank" rel="external">这篇文章</a>有简明的介绍，举个例子好了：<code>implement search autocomplete in python</code></p>
+<ul>
+<li>这句话如果按2-Gram划分的话，就是<code>implement search</code>，<code>search autocomplete</code>，<code>autocomplete in</code>，<code>in python</code>；</li>
+<li>那么按照3-Gram划分的话，就是<code>implement search autocomplete</code>，<code>search autocomplete in</code>，<code>autocomplete in python</code>；</li>
+<li>按照4-Gram划分的话，就是<code>implement search autocomplete in</code>，<code>search autocomplete in python</code>；</li>
+<li>按照5-Gram划分的话，就是一整句话，不作任何切割。</li>
+</ul>
+<p>这里我没有给出1-Gram的例子，各位可以思考一下是为什么，这里先卖个关子，下面会提到原因。这里我们先回头思考一下搜索引擎给出的联想词汇，比如我输入了一个<code>autocomplete</code>，那么后面你觉得是给出<code>in python</code>看上去更自然还是<code>Transformer</code>更合理？显然是前者对么，如果给出了后者，你可能会想：<code>autocomplete Transformer</code>是什么鬼？！难道是某种新型变形金刚么？没听过啊！那之所以会有这样的感觉，是因为从我们平时获取的信息中，我们对于<code>autocomplete</code>这个词后面的衔接词接收到的也是<code>in python</code>远远多于<code>Transformer</code>，对吧？所以说到这里就大概有点明晰了，搜索引擎对于联想词汇的推荐也有这方面的考虑，我们给输入一个或多个引导词，<code>autocomplete</code>功能将后面最有可能出现的几种选择展现给我们。所以这也是为什么用到N-Gram的原因，这里其实就是一个句子分割的过程。</p>
+<p>那么这里就引出了下一个问题：是该基于一句话最后一个词来预测后面的推荐，还是根据更多的词甚至一整句来预测下面的出现呢？</p>
+<p>还继续以上面的例子说好了。假设我已经输入了<code>implement search autocomplete in</code>，如果是按照最后一个出现的词来进行联想，那么<code>in</code>后面其实可以跟很多很多内容，都不会违和，对吧？比如<code>in box</code>，<code>in air</code>，<code>in heart</code>等等，但如果把这些联想放到一整句中，显然是不太合理的。因此，我们在实现<code>autocomplete</code>的时候，其实是<strong>基于N-Gram预测N-Gram</strong>。</p>
+<p>那到这里，其实<code>autocomplete</code>的实现的大致思路就应该有了。我们需要将大批量的文档用N-Gram的处理方式进行切割，统计相同短语出现的频次，构建N-Gram的模型，然后找出每个短语之后出现频次最高的几个词汇作为预测保存下来。最终将结果存入数据库，以方便之后调用。下面我们就来看看如何一步步具体实现。</p>
+<hr>
+<h2 id="MapReduce实现"><a href="#MapReduce实现" class="headerlink" title="MapReduce实现"></a>MapReduce实现</h2><h3 id="N-Gram模型构建"><a href="#N-Gram模型构建" class="headerlink" title="N-Gram模型构建"></a>N-Gram模型构建</h3><p>在这次的代码实现中，我们需要用到两个mapper和reducer。首先，我们需要一对mapper和reducer将输入的文档进行切割。</p>
+<p><code>n_gram_mapper.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> string</div><div class="line"><span class="keyword">import</span> re</div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(N_Gram)</span>:</span></div><div class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</div><div class="line">        <span class="comment"># 去除所有的标点符号</span></div><div class="line">        translator = str.maketrans(string.punctuation, <span class="string">" "</span> * len(string.punctuation))</div><div class="line">        line = line.translate(translator).strip().lower()</div><div class="line">        </div><div class="line">        <span class="comment"># 去除所有的数字</span></div><div class="line">        line = re.sub(<span class="string">"\d"</span>, <span class="string">" "</span>, line)</div><div class="line">        </div><div class="line">        <span class="comment"># 按照空格或者\t来切割</span></div><div class="line">        words = re.split(<span class="string">"\\s+"</span>, line)</div><div class="line">        <span class="keyword">if</span> len(words) &lt; <span class="number">2</span>:</div><div class="line">            <span class="keyword">continue</span></div><div class="line">            </div><div class="line">        <span class="keyword">for</span> i, word <span class="keyword">in</span> enumerate(words):</div><div class="line">            result = word</div><div class="line">            <span class="keyword">for</span> j, next_word <span class="keyword">in</span> enumerate(words[i+<span class="number">1</span>:], <span class="number">1</span>):</div><div class="line">                <span class="keyword">if</span> j &lt; N_Gram:</div><div class="line">                    result += <span class="string">" "</span></div><div class="line">                    result += next_word</div><div class="line">                    print(<span class="string">"&#123;&#125;\t&#123;&#125;"</span>.format(result, <span class="number">1</span>))</div><div class="line">                    </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main(<span class="number">5</span>)</div></pre></td></tr></table></figure>
+<p>如果你想构建一个<strong>N=5</strong>的N-Gram模型，那么在mapper里，就需要将2到5的分割方式都输出。还记得上面我有留一个悬念，为什么不考虑1-Gram么？因为显然1-Gram是没有用的，它并不能告诉我一个短语后面可能出现的词有什么。</p>
+<p><code>n_gram_reducer.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> groupby</div><div class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_output</span><span class="params">(std_input)</span>:</span></div><div class="line">    <span class="comment"># 利用generator节省MapReduce内存使用空间</span></div><div class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> std_input:</div><div class="line">        <span class="keyword">yield</span> line.strip().split(<span class="string">"\t"</span>)</div><div class="line">        </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    data = parse_output(sys.stdin)</div><div class="line">    <span class="keyword">for</span> word, group <span class="keyword">in</span> groupby(data, itemgetter(<span class="number">0</span>)):</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            total_count = sum(int(count) <span class="keyword">for</span> word, count <span class="keyword">in</span> group)</div><div class="line">            print(<span class="string">"&#123;&#125;\t&#123;&#125;"</span>.format(word, total_count))</div><div class="line">        <span class="keyword">except</span> ValueError:</div><div class="line">            <span class="keyword">continue</span></div><div class="line">            </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main()</div></pre></td></tr></table></figure>
+<p>这回的reducer我用到了<code>generator</code>来调用数据，这样做可以有效节省内存占用空间。因为随着输入数据量的越来越大，即便是5-Gram，依然也是个很庞大的记录数量。下面的主函数部分，我也放弃了之前的简单用法，用groupby可以明显提升代码的阅读逻辑，对<code>itertools.groupby</code>不太熟悉的朋友可以看<a href="https://docs.python.org/3/library/itertools.html" target="_blank" rel="external">这份官方文档</a>。</p>
+<h3 id="N-Gram测试结果"><a href="#N-Gram测试结果" class="headerlink" title="N-Gram测试结果"></a>N-Gram测试结果</h3><p>做下一步之前，我们先来本地测试一下这一对mapper和reducer是否好用。</p>
+<p>测试文档：我直接把<a href="https://en.wikipedia.org/wiki/MapReduce" target="_blank" rel="external">MapReduce</a>的Wiki里头一段关于它的说明解释，粘贴下来作为测试文档用。
+<figure class="highlight console"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">root@hadoop:~/src/p2py# cat input/file2.txt | ./n_gram_mapper.py | sort | ./n_gram_reducer.py</div><div class="line">a cluster	1</div><div class="line">a good	1</div><div class="line">a good mapreduce	1</div><div class="line">a good mapreduce algorithm	1</div><div class="line">a map	1</div><div class="line">a map procedure	1</div><div class="line">a map procedure method	1</div><div class="line">a map procedure method that	1</div><div class="line">a mapreduce	1</div><div class="line">a mapreduce program	1</div><div class="line">a mapreduce program is	1</div><div class="line">a mapreduce program is composed	1</div><div class="line">...</div><div class="line">and reduce	3</div><div class="line">and reduce capabilities	1</div><div class="line">and reduce functions	2</div><div class="line">...</div><div class="line">map and	3</div><div class="line">map and reduce	3</div><div class="line">map and reduce capabilities	1</div><div class="line">map and reduce functions	2</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>我这里就截取一部分结果，实在太长了……</p>
+<h3 id="构建预测概率的模型"><a href="#构建预测概率的模型" class="headerlink" title="构建预测概率的模型"></a>构建预测概率的模型</h3><p>我们现在已经有了N-Gram切割后的结果了，下一步就是要在此基础上分析每一个词汇或者短语后面可能出现的内容，这里其实可以理解成构建一个概率模型，很简单一个概率模型。</p>
+<p>举例说明，我们先来看刚才的结果生成的一部分
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">and data	1</div><div class="line">and development	1</div><div class="line">and fault	3</div><div class="line">and generating	1</div><div class="line">and less	1</div><div class="line">and providing	1</div><div class="line">and reduce	3</div><div class="line">and scatter	1</div><div class="line">and sorting	1</div></pre></td></tr></table></figure></p>
+<p>先仅仅分析and之后可能出现的词汇，所有的情况都在这里摆着了。那这时候autocomplete会如何给出推荐呢？很显然的，fault和reduce会放到头两个推荐对吧，为什么？这其实就是个概率的问题：and后接一个词在文中出现了<code>1+1+3+1+1+1+3+1+1=13</code>次，那fault和reduce推荐的概率就是<code>3/13</code>，剩下的所有都是<code>1/13</code>的概率。对于<code>autocomplete</code>系统来说，这意味着当用户输入了and之后，它认为用户更有可能继续输入的是fault和reduce，因为从它以往经验（系统所得到的输入）来看，fault和reduce出现的频次更多一些，相比较于其他的结果。因此，下一步工作，我们需要得到一个类似于<code>and&lt;\t&gt;data=1</code>这样的数据记录样式，来统计所有的短语之后跟随的词汇以及它出现的频次。这里我们之所以不用概率来进行记录，是因为从刚才的计算过程来看，词频和概率是正相关的，那么就没必要多算一步记录概率了。</p>
+<p><code>prob_mapper.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> string</div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(threshold)</span>:</span></div><div class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</div><div class="line">        words_phrase, count = line.strip().split(<span class="string">"\t"</span>)</div><div class="line">        <span class="keyword">if</span> int(count) &lt; threshold:</div><div class="line">            <span class="keyword">continue</span></div><div class="line">            </div><div class="line">        words = words_phrase.strip().split(<span class="string">" "</span>)</div><div class="line">        <span class="keyword">if</span> len(words) &lt; <span class="number">2</span>:</div><div class="line">            <span class="keyword">continue</span></div><div class="line">            </div><div class="line">        print(<span class="string">"&#123;&#125;\t&#123;&#125;"</span>.format(<span class="string">' '</span>.join(words[:<span class="number">-1</span>]), words[<span class="number">-1</span>] + <span class="string">"="</span> + count))</div><div class="line">        </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main(<span class="number">2</span>)</div></pre></td></tr></table></figure>
+<p>mapper的工作其实很简单，基本没有什么需要说明的。需要注意的是，这里我加入了一个threshold参数，意义是为了筛选掉一部分出现频次太低的结果。刚才举的例子里，每个结果出现的频次其实都不高，这样threshold肯定是没用的，但实际生产中，比如像Google和百度这样的超大规模的搜索引擎，每天可能抓取的数据量十分庞大。事实上，我们每次在搜索框中输入内容，得到的联想其实都在二十条以内，一般来说不会给太多的，太多的话，用户筛选起来也是个麻烦。那对于那些基本很少出现的词组组合，也就没必要存储下来，被搜索到的概率太低，如果全部都记录下来，对数据库的存储容量是个很大的负担。</p>
+<p><code>prob_reducer.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> groupby</div><div class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> itemgetter</div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_output</span><span class="params">(std_input)</span>:</span></div><div class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> std_input:</div><div class="line">        <span class="keyword">yield</span> line.strip().split(<span class="string">"\t"</span>)</div><div class="line">        </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(n_gram)</span>:</span></div><div class="line">    data = parse_output(sys.stdin)</div><div class="line">    <span class="keyword">for</span> starting_phrase, group <span class="keyword">in</span> groupby(data, itemgetter(<span class="number">0</span>)):</div><div class="line">        result = &#123;&#125;</div><div class="line">        <span class="keyword">for</span> _, word_count <span class="keyword">in</span> group:</div><div class="line">            word, count = word_count.split(<span class="string">"="</span>)</div><div class="line">            count = int(count)</div><div class="line">            <span class="keyword">if</span> count <span class="keyword">not</span> <span class="keyword">in</span> result:</div><div class="line">                result[count] = []</div><div class="line">            result[count].append(word)</div><div class="line">            </div><div class="line">        i = <span class="number">0</span></div><div class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> result.items():</div><div class="line">            <span class="keyword">if</span> i &lt; n_gram:</div><div class="line">                <span class="keyword">for</span> word <span class="keyword">in</span> value:</div><div class="line">                    print(<span class="string">"&#123;&#125;,&#123;&#125;,&#123;&#125;"</span>.format(starting_phrase, word, key))</div><div class="line">                    i += <span class="number">1</span></div><div class="line">                    </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main(<span class="number">4</span>)</div></pre></td></tr></table></figure>
+<p><code>starting_phrase</code>代表的是用户输入的部分，<code>following_word</code>代表的是后面可能出现的词汇，<code>count</code>顾名思义就是指词频了。在reducer中，我们先按照词频的不同将可能出现的词汇分组放置，然后再根据我们需要的N-Gram大小来依次输出。这里的参数n_gram和之前n_gram_mapper里的n_gram意思一样，但取值可以不同。</p>
+<hr>
+<h3 id="预测概率的测试结果"><a href="#预测概率的测试结果" class="headerlink" title="预测概率的测试结果"></a>预测概率的测试结果</h3><p>下面我们来看看本地测试结果吧，就用上一步n_gram_reducer得出的结果继续操作。</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">root@hadoop:~/src/p2py# cat result.txt | ./prob_mapper.py | ./prob_reducer.py </div><div class="line">and,fault,3</div><div class="line">and fault,tolerance,3</div><div class="line">and,reduce,3</div><div class="line">and reduce,functions,2</div><div class="line">big,data,2</div><div class="line">communication,cost,2</div><div class="line">fault,tolerance,3</div><div class="line">is,a,2</div><div class="line">map,and,3</div><div class="line">map and,reduce,3</div><div class="line">map and reduce,functions,2</div><div class="line">mapreduce,framework,3</div><div class="line">method,that,2</div><div class="line">method that,performs,2</div><div class="line">model,and,2</div><div class="line">model,is,2</div><div class="line">not,the,2</div><div class="line">of,the,4</div><div class="line">of the,mapreduce,2</div><div class="line">of the mapreduce,framework,2</div><div class="line">optimizing,the,2</div><div class="line">reduce,functions,2</div><div class="line">such,as,2</div><div class="line">that,performs,2</div><div class="line">the,mapreduce,4</div><div class="line">the mapreduce,framework,3</div><div class="line">the,various,2</div></pre></td></tr></table></figure>
+<p>因为之前在mapper里我们将threshold设置为2，这里我们就可以看到结果中只有词频不小于2次的。</p>
+<h3 id="运行在Hadoop上"><a href="#运行在Hadoop上" class="headerlink" title="运行在Hadoop上"></a>运行在Hadoop上</h3><p>刚才在本地跑过了之后，下面来进行Hadoop上的测试。为了方便快捷，我编写了一个script来运行两对mapper和reducer，最后把得到的数据从HDFS里导出到本地。
+<figure class="highlight console"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">root@hadoop:~/src/p2py# ./run_script.sh </div><div class="line">    </div><div class="line">Cleaning old results in /output...</div><div class="line">17/10/10 01:30:20 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.</div><div class="line">Deleted /output</div><div class="line">    </div><div class="line">Running python in Hadoop by hadoop streaming...</div><div class="line">    </div><div class="line">packageJobJar: [/tmp/hadoop-unjar5398292596529368576/] [] /tmp/streamjob5913697815224381390.jar tmpDir=null</div><div class="line">17/10/10 01:30:22 INFO client.RMProxy: Connecting to ResourceManager at hadoop-master/172.18.0.2:8032</div><div class="line">17/10/10 01:30:22 INFO client.RMProxy: Connecting to ResourceManager at hadoop-master/172.18.0.2:8032</div><div class="line">17/10/10 01:30:23 INFO mapred.FileInputFormat: Total input paths to process : 1</div><div class="line">...</div><div class="line">17/10/10 01:30:49 INFO streaming.StreamJob: Output directory: /output/first</div><div class="line">    </div><div class="line">Running 2nd mapper and reducer...</div><div class="line">    </div><div class="line">packageJobJar: [/tmp/hadoop-unjar6814698868258273333/] [] /tmp/streamjob6470458846508985375.jar tmpDir=null</div><div class="line">17/10/10 01:30:51 INFO client.RMProxy: Connecting to ResourceManager at hadoop-master/172.18.0.2:8032</div><div class="line">17/10/10 01:30:51 INFO client.RMProxy: Connecting to ResourceManager at hadoop-master/172.18.0.2:8032</div><div class="line">17/10/10 01:30:52 INFO mapred.FileInputFormat: Total input paths to process : 1</div><div class="line">...</div><div class="line">17/10/10 01:31:13 INFO streaming.StreamJob: Output directory: /output/second</div><div class="line">    </div><div class="line">Moving outputs from HDFS to local...</div><div class="line">    </div><div class="line">Got the output!</div></pre></td></tr></table></figure></p>
+<p>一切顺利运行！最终结果也被成功导出到本地。</p>
+<hr>
+<h2 id="导入数据库"><a href="#导入数据库" class="headerlink" title="导入数据库"></a>导入数据库</h2><p>其实到上一小节，MapReduce的工作就都做完了，但为了让<code>autocomplete</code>可以展现出应有的效果，这里还需要将刚才生成的数据导出到数据库中，以便之后和Web结合来体现功能。</p>
+<p>数据库我用的是MySQL，大家可以任意选择。下面是我的数据库操作代码：
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> MySQLdb <span class="keyword">as</span> mdb</div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_data</span><span class="params">(file)</span>:</span></div><div class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> file.readlines():</div><div class="line">        <span class="keyword">yield</span> line.strip().split(<span class="string">","</span>)</div><div class="line">        </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(input_data)</span>:</span></div><div class="line">    <span class="keyword">with</span> mdb.connect(<span class="string">'localhost'</span>, <span class="string">'username'</span>, <span class="string">'password'</span>, <span class="string">'dbname'</span>) <span class="keyword">as</span> cur:</div><div class="line">        cur.execute(<span class="string">"DROP TABLE IF EXISTS output"</span>)</div><div class="line">        cur.execute(</div><div class="line">            <span class="string">"CREATE TABLE output(starting_phrase VARCHAR(250), following_word VARCHAR(250), count INT)"</span>)</div><div class="line">        <span class="keyword">with</span> open(input_data, <span class="string">'r'</span>) <span class="keyword">as</span> file:</div><div class="line">            <span class="keyword">for</span> starting_phrase, following_word, count <span class="keyword">in</span> read_data(file):</div><div class="line">                cur.execute(</div><div class="line">                    <span class="string">"INSERT INTO output(starting_phrase, following_word, count) \</span></div><div class="line"><span class="string">                     VALUES('&#123;&#125;', '&#123;&#125;', &#123;&#125;)"</span>.format(starting_phrase, following_word, count))</div><div class="line">                     </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    main(<span class="string">"output"</span>)</div></pre></td></tr></table></figure></p>
+<p>数据库中显示的结果：
+<img src="/images/autocomplete/database.png" alt="database"></p>
+<hr>
+<h2 id="展示结果"><a href="#展示结果" class="headerlink" title="展示结果"></a>展示结果</h2><p>我简单做了一个Web展示的页面，基于Ajax和PHP，连接数据库后，测试结果如下图所示：
+<img src="/images/autocomplete/ggif.gif" alt="test"></p>
+<hr>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文从零开始，不太详细的介绍了<code>autocomplete</code>的工作原理，以及如何利用Python和MapReduce来处理数据。相比较Java实现这些内容而言，Python确实需要注意更多的细节，毕竟Java是Hadoop原生环境，configuration的配置真的是方便。之前做wordcount时没有觉得Python+Hadoop Streaming的方式有什么问题，因为Python天生的简洁特质，感觉比Java啰里啰嗦的舒服多了。但这次的代码实现上就看出端倪了，Python下更多的细节部分需要开发者自己写代码去维护，就像不同的mapper，reducer之间的数据传输，还有输出到数据库保存。</p>
+<p>一路从头看到这里的朋友，感谢你的阅读，如果有疑惑，欢迎👇下面留言，如果文章中有什么不对的地方，也欢迎批评和指正。</p>
+<hr>
+<h1 id="Related-Links"><a href="#Related-Links" class="headerlink" title="Related Links"></a>Related Links</h1><ol>
+<li><a href="http://blog.sciencenet.cn/blog-713101-797384.html" target="_blank" rel="external">N-gram的原理、用途和研究</a></li>
+</ol>
+
+                </div>
+                
+                    <div class="article-tags tags">
+                        
+                            <a href="/tags/Python/">
+                                Python
+                            </a>
+                            
+                            <a href="/tags/Hadoop/">
+                                Hadoop
+                            </a>
+                            
+                            <a href="/tags/MapReduce/">
+                                MapReduce
+                            </a>
+                            
+                    </div>
+                    
+
+                        
+                            <div class="art-item-footer">
+                                
+                                        
+                                            <span class="art-item-right">next：<a href="/2017/10/02/Data-analysis-in-Python-by-Pandas/" rel="next"  title="Data analysis in Python by Pandas">
+						Data analysis in Python by Pandas
+					</a><i class="icon icon-chevron-thin-right"></i></span>
+                                            
+                            </div>
+                            
+            </section>
+            
+                <section id="comments">
+                    <div id="disqus_thread"></div>
+
+                    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </section>
+                
+    
+</article>
+<script>
+    window.subData = {
+        title: '用Python在Hadoop上实现搜索自动补全',
+        tools: true
+    }
+
+</script>
+
+      </div>
+      <aside class='l_side'>
+        
+  <section class='m_widget about'>
+    
+        <img class='avatar waves-image' src='/images/avatar.png' />
+        
+            <div class='header'>
+                Yuan Zhang
+            </div>
+            <div class='content'>
+                <div class='desc'>
+                    Information -&gt; Knowledge -&gt; Wisdom
+                </div>
+            </div>
+</section>
+
+
+  <section class='m_widget links'>
+<div class='header'>Links</div>
+<div class='content'>
+    <ul class="entry">
+    
+    </ul>
+</div>
+</section>
+
+  <section class='m_widget categories'>
+<div class='header'>Categories</div>
+<div class='content'>
+    
+    <ul class="entry">
+    
+        <li><a class="flat-box" href="/categories/Big-Data/"><div class='name'>Big Data</div><div class='badget'>2</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/Data-analysis/"><div class='name'>Data analysis</div><div class='badget'>1</div></a></li>
+    
+        <li><a class="flat-box" href="/categories/general/"><div class='name'>general</div><div class='badget'>2</div></a></li>
+    
+    </ul>
+    
+</div>
+</section>
+
+  
+<div class="m_widget tagcloud">
+    <div class="header">Tags</div>
+    <div class='content'>
+        <a href="/tags/Blog/" style="font-size: 14px; color: #808080">Blog</a> <a href="/tags/Data-analysis/" style="font-size: 14px; color: #808080">Data analysis</a> <a href="/tags/Docker/" style="font-size: 14px; color: #808080">Docker</a> <a href="/tags/First/" style="font-size: 14px; color: #808080">First</a> <a href="/tags/Hadoop/" style="font-size: 17px; color: #404040">Hadoop</a> <a href="/tags/Heroku/" style="font-size: 14px; color: #808080">Heroku</a> <a href="/tags/MapReduce/" style="font-size: 17px; color: #404040">MapReduce</a> <a href="/tags/Netlify/" style="font-size: 14px; color: #808080">Netlify</a> <a href="/tags/Pandas/" style="font-size: 14px; color: #808080">Pandas</a> <a href="/tags/Python/" style="font-size: 20px; color: #000">Python</a> <a href="/tags/migrate/" style="font-size: 14px; color: #808080">migrate</a> <a href="/tags/static-site/" style="font-size: 14px; color: #808080">static site</a>
+    </div>
+</div>
+
+
+
+      </aside>
+      <script>setLoadingBarProgress(60);</script>
+    </div>
+  </div>
+  <footer id="footer" class="clearfix">
+
+	<div class="social-wrapper">
+  	
+      
+        <a href="https://github.com/rocheers" class="social github"
+          target="_blank" rel="external">
+          <span class="icon icon-github"></span>
+        </a>
+      
+        <a href="https://twitter.com/rocheers" class="social twitter"
+          target="_blank" rel="external">
+          <span class="icon icon-twitter"></span>
+        </a>
+      
+        <a href="/atom.xml" class="social rss"
+          target="_blank" rel="external">
+          <span class="icon icon-rss"></span>
+        </a>
+      
+    
+  </div>
+  
+<!--  <div>Theme <a href='https://github.com/stkevintan/hexo-theme-material-flow' class="codename">MaterialFlow</a> designed by <a href="http://keyin.me/" target="_blank">Kevin Tan</a>.</div>-->
+  
+</footer>
+
+
+  <script>setLoadingBarProgress(80);</script>
+  
+    <script>
+        var disqus_shortname = 'yuanhome';
+        
+            var disqus_config = function () {
+                this.page.url = 'http://yuannow.com/2017/10/09/Implement-Search-Auto-Complete-by-Python-Hadoop/';
+                this.page.identifier = '_posts/Implement-Search-Auto-Complete-by-Python-Hadoop.md';
+            };
+        
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document,
+                s = d.createElement('script');
+            s.src = "//yuanhome.disqus.com/embed.js";
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+
+    </script>
+
+    <script id="dsq-count-scr" src="//yuanhome.disqus.com/count.js" async></script>
+
+
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src='//cdn.bootcss.com/node-waves/0.7.5/waves.min.js'></script>
+<script src="//cdn.bootcss.com/scrollReveal.js/3.3.2/scrollreveal.min.js"></script>
+<script src="/js/jquery.fitvids.js"></script>
+    <script>
+        var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+        var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+        var ALGOLIA_API_KEY = "";
+        var ALGOLIA_APP_ID = "";
+        var ALGOLIA_INDEX_NAME = "";
+        var AZURE_SERVICE_NAME = "";
+        var AZURE_INDEX_NAME = "";
+        var AZURE_QUERY_KEY = "";
+        var BAIDU_API_ID = "";
+        var SEARCH_SERVICE = "hexo";
+        var ROOT = "/" || "/";
+        if (!ROOT.endsWith('/')) ROOT += '/';
+
+    </script>
+<script src="/js/search.js"></script>
+<script src="/js/app.js"></script>
+
+  <script>setLoadingBarProgress(100);</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  
-  <title>Migrated from Heroku to Netlify | X space</title>
-  <meta name="description" content="Information -&gt; Knowledge -&gt; Wisdom" />
-  <meta name="keywords" content="" />
-  <meta name="HandheldFriendly" content="True" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="shortcut icon" href="/images/favicon.png">
-  <link rel="alternate" href="/atom.xml" title="X space">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="之前学习ruby on rails的时候，开始接触的Heroku。这次部署个人博客，想着Heroku应该是个不错的选择吧，但试用了几天的Heroku之后，我决定还是转到其他地方部署我的blog，为什么呢？原因有二：  免费的Heroku App，如果搁置时间长了一直无人访问的话，再次访问是需要一定时间等待激活的，就像是电脑睡眠了等着叫醒一样。付费的话太贵，对于只是搭载个人博客而言不太划算； Her">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    
+    <title>Migrated from Heroku to Netlify | X space</title>
+    <meta name="description" content="Information -&gt; Knowledge -&gt; Wisdom" />
+    <meta name="keywords" content="" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="shortcut icon" href="/images/favicon.png">
+    <link rel="alternate" href="/atom.xml" title="X space">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="之前学习ruby on rails的时候，开始接触的Heroku。这次部署个人博客，想着Heroku应该是个不错的选择吧，但试用了几天的Heroku之后，我决定还是转到其他地方部署我的blog，为什么呢？原因有二：  免费的Heroku App，如果搁置时间长了一直无人访问的话，再次访问是需要一定时间等待激活的，就像是电脑睡眠了等着叫醒一样。付费的话太贵，对于只是搭载个人博客而言不太划算； Her">
 <meta name="keywords" content="Netlify,migrate,Heroku,static site">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Migrated from Heroku to Netlify">
@@ -27,17 +27,26 @@
 <meta name="twitter:description" content="之前学习ruby on rails的时候，开始接触的Heroku。这次部署个人博客，想着Heroku应该是个不错的选择吧，但试用了几天的Heroku之后，我决定还是转到其他地方部署我的blog，为什么呢？原因有二：  免费的Heroku App，如果搁置时间长了一直无人访问的话，再次访问是需要一定时间等待激活的，就像是电脑睡眠了等着叫醒一样。付费的话太贵，对于只是搭载个人博客而言不太划算； Her">
 <meta name="twitter:image" content="http://yuannow.com/images/drag_deploy.png">
     
-  <link href="https://fonts.googleapis.com/css?family=Inconsolata|Titillium+Web" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
-  <link href='//cdn.bootcss.com/node-waves/0.7.5/waves.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="/style.css">
-  <script>
-    function setLoadingBarProgress(num) {
-      document.getElementById('loading-bar').style.width=num+"%";
-    }
-  </script>
-</head>
-
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata|Titillium+Web" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link href='//cdn.bootcss.com/node-waves/0.7.5/waves.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/style.css">
+    <script>
+      function setLoadingBarProgress(num) {
+        document.getElementById('loading-bar').style.width=num+"%";
+      }
+    </script>
+    
+      <!-- Global Site Tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107727758-1"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-107727758-1');
+      </script>
+    
+  </head>
 <body>
   <div id="loading-bar-wrapper">
   <div id="loading-bar"></div>
@@ -262,7 +271,7 @@
     
     <ul class="entry">
     
-        <li><a class="flat-box" href="/categories/Big-Data/"><div class='name'>Big Data</div><div class='badget'>1</div></a></li>
+        <li><a class="flat-box" href="/categories/Big-Data/"><div class='name'>Big Data</div><div class='badget'>2</div></a></li>
     
         <li><a class="flat-box" href="/categories/Data-analysis/"><div class='name'>Data analysis</div><div class='badget'>1</div></a></li>
     
@@ -277,7 +286,7 @@
 <div class="m_widget tagcloud">
     <div class="header">Tags</div>
     <div class='content'>
-        <a href="/tags/Blog/" style="font-size: 14px; color: #808080">Blog</a> <a href="/tags/Data-analysis/" style="font-size: 14px; color: #808080">Data analysis</a> <a href="/tags/Docker/" style="font-size: 14px; color: #808080">Docker</a> <a href="/tags/First/" style="font-size: 14px; color: #808080">First</a> <a href="/tags/Hadoop/" style="font-size: 14px; color: #808080">Hadoop</a> <a href="/tags/Heroku/" style="font-size: 14px; color: #808080">Heroku</a> <a href="/tags/MapReduce/" style="font-size: 14px; color: #808080">MapReduce</a> <a href="/tags/Netlify/" style="font-size: 14px; color: #808080">Netlify</a> <a href="/tags/Pandas/" style="font-size: 14px; color: #808080">Pandas</a> <a href="/tags/Python/" style="font-size: 20px; color: #000">Python</a> <a href="/tags/migrate/" style="font-size: 14px; color: #808080">migrate</a> <a href="/tags/static-site/" style="font-size: 14px; color: #808080">static site</a>
+        <a href="/tags/Blog/" style="font-size: 14px; color: #808080">Blog</a> <a href="/tags/Data-analysis/" style="font-size: 14px; color: #808080">Data analysis</a> <a href="/tags/Docker/" style="font-size: 14px; color: #808080">Docker</a> <a href="/tags/First/" style="font-size: 14px; color: #808080">First</a> <a href="/tags/Hadoop/" style="font-size: 17px; color: #404040">Hadoop</a> <a href="/tags/Heroku/" style="font-size: 14px; color: #808080">Heroku</a> <a href="/tags/MapReduce/" style="font-size: 17px; color: #404040">MapReduce</a> <a href="/tags/Netlify/" style="font-size: 14px; color: #808080">Netlify</a> <a href="/tags/Pandas/" style="font-size: 14px; color: #808080">Pandas</a> <a href="/tags/Python/" style="font-size: 20px; color: #000">Python</a> <a href="/tags/migrate/" style="font-size: 14px; color: #808080">migrate</a> <a href="/tags/static-site/" style="font-size: 14px; color: #808080">static site</a>
     </div>
 </div>
 
