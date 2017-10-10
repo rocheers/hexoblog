@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yuannow.com/"/>
-  <updated>2017-10-06T06:00:58.000Z</updated>
+  <updated>2017-10-10T09:12:39.000Z</updated>
   <id>http://yuannow.com/</id>
   
   <author>
@@ -17,11 +17,38 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>用Python在Hadoop上实现搜索自动补全</title>
+    <link href="http://yuannow.com/2017/10/09/Implement-Search-Auto-Complete-by-Python-Hadoop/"/>
+    <id>http://yuannow.com/2017/10/09/Implement-Search-Auto-Complete-by-Python-Hadoop/</id>
+    <published>2017-10-10T00:40:18.000Z</published>
+    <updated>2017-10-10T09:12:39.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;/images/autocomplete/autocomplete.png&quot; alt=&quot;search autocomplete&quot;&gt;
+记得很早的时候，刚开始接触搜索引擎，那时候Google还没有被墙，百度也是刚刚诞生没多久，无论我在输入框内输入什么，只是显示我输入的内容，并没有任何联想功能提示我接下来可能匹配的内容。有时候想找个东西，可就是死活想不起来准确的名字或者描述方式，这个时候搜索引擎也帮不了你，你只能变着法的尝试各种输入，来寻求最终你想要的结果。后来搜索引擎加入了联想功能，这着实是一大进步，极大地提高了搜索效率。有的时候，我们对于想查询的某一问题的提问方式是很模糊的，这个时候当你输入了一些关键词，发现搜索引擎会根据你的输入给你一些后续内容的建议，会让你更容易的找到自己想要的答案。&lt;/p&gt;
+&lt;h1 id=&quot;本文目的&quot;&gt;&lt;a href=&quot;#本文目的&quot; class=&quot;headerlink&quot; title=&quot;本文目的&quot;&gt;&lt;/a&gt;本文目的&lt;/h1&gt;&lt;p&gt;上一篇我在《用Python在Hadoop上跑MapReduce》中介绍了一些关于如何利用&lt;code&gt;Hadoop Streaming&lt;/code&gt;运行Python版MapReduce的简单操作，如何实现词频统计就像是MapReduce中的&lt;em&gt;Hello World&lt;/em&gt;，不过做完了入门教程，为了深入学习，还得需要更多的练习。&lt;/p&gt;
+&lt;p&gt;在这篇文章中，我将会带各位实现一个很简单的搜索联想功能，比较粗糙，但是看起来也挺像那么回事的~&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Big Data" scheme="http://yuannow.com/categories/Big-Data/"/>
+    
+    
+      <category term="Python" scheme="http://yuannow.com/tags/Python/"/>
+    
+      <category term="Hadoop" scheme="http://yuannow.com/tags/Hadoop/"/>
+    
+      <category term="MapReduce" scheme="http://yuannow.com/tags/MapReduce/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Data analysis in Python by Pandas</title>
     <link href="http://yuannow.com/2017/10/02/Data-analysis-in-Python-by-Pandas/"/>
     <id>http://yuannow.com/2017/10/02/Data-analysis-in-Python-by-Pandas/</id>
     <published>2017-10-02T07:03:37.000Z</published>
-    <updated>2017-10-06T06:00:58.000Z</updated>
+    <updated>2017-10-10T09:14:52.000Z</updated>
     
     <summary type="html">
     
@@ -29,12 +56,6 @@
 &lt;h1 id=&quot;本文目的&quot;&gt;&lt;a href=&quot;#本文目的&quot; class=&quot;headerlink&quot; title=&quot;本文目的&quot;&gt;&lt;/a&gt;本文目的&lt;/h1&gt;&lt;p&gt;这次，我打算用一篇长文来记录一下自己是如何利用Pandas进行数据分析的。网上有很多的&lt;code&gt;Pandas&lt;/code&gt;入门教程，因此我这里并不打算针对所有Pandas的基础操作描述的那么清楚，还是希望更多的表达一些对于数据分析的想法和实现。&lt;/p&gt;
 &lt;p&gt;广义上，数据分析其实包含了从导入数据-&amp;gt;清洗数据-&amp;gt;&lt;strong&gt;分析数据&lt;/strong&gt;-&amp;gt;展示数据，这一从头到尾的流程。狭义上，数据分析指的就是中间分析数据这一块内容。本文按照广义上的数据分析的过程来一步步探讨。&lt;/p&gt;
 &lt;p&gt;接下来我们就正式开始本次数据分析之旅。&lt;/p&gt;
-&lt;h1 id=&quot;正文&quot;&gt;&lt;a href=&quot;#正文&quot; class=&quot;headerlink&quot; title=&quot;正文&quot;&gt;&lt;/a&gt;正文&lt;/h1&gt;&lt;p&gt;下面的这一段代码主要是包的调用和一些环境配置，&lt;code&gt;Seaborn&lt;/code&gt;是也是一个plot包，可用来画出比&lt;code&gt;Matplotlib&lt;/code&gt;更漂亮的图，它本身是基于&lt;code&gt;Matplotlib&lt;/code&gt;设计的，对&lt;code&gt;NumPy&lt;/code&gt;和&lt;code&gt;Pandas&lt;/code&gt;都有很好的支持。这里我就不做过多解释了，对&lt;code&gt;Seaborn&lt;/code&gt;有兴趣的朋友可以留言咨询或者自行探索。
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;8&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;9&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;10&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; pandas &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; pd&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;from&lt;/span&gt; matplotlib &lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; pyplot &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; plt&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;import&lt;/span&gt; seaborn &lt;span class=&quot;keyword&quot;&gt;as&lt;/span&gt; sns&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;%matplotlib inline&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sns.set(rc=&amp;#123;&lt;span class=&quot;string&quot;&gt;&quot;figure.figsize&quot;&lt;/span&gt;: (&lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;6.25&lt;/span&gt;)&amp;#125;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sns.set_style(&lt;span class=&quot;string&quot;&gt;&quot;darkgrid&quot;&lt;/span&gt;)&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;colors = [&lt;span class=&quot;string&quot;&gt;&quot;windows blue&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;amber&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;faded green&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;greyish&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;dusty purple&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;red violet&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;marine&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;jungle green&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;chocolate brown&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;dull pink&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;reddish orange&quot;&lt;/span&gt;]&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;sns.set_palette(sns.xkcd_palette(colors))&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;h2 id=&quot;导入数据&quot;&gt;&lt;a href=&quot;#导入数据&quot; class=&quot;headerlink&quot; title=&quot;导入数据&quot;&gt;&lt;/a&gt;导入数据&lt;/h2&gt;&lt;p&gt;我这次用的数据是IGN上近20年来的各种平台的游戏，来源于&lt;a href=&quot;https://www.kaggle.com/egrinstein/20-years-of-games&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里&lt;/a&gt;。&lt;/p&gt;
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;reviews = pd.read_csv(&lt;span class=&quot;string&quot;&gt;&quot;ign.csv&quot;&lt;/span&gt;)&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;数据读入之后，我们来看一下这里都有些什么内容。
-&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;reviews.head()&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
     
     </summary>
     
@@ -54,32 +75,24 @@
     <link href="http://yuannow.com/2017/09/29/Map-reduce-works-perfectly-with-Python/"/>
     <id>http://yuannow.com/2017/09/29/Map-reduce-works-perfectly-with-Python/</id>
     <published>2017-09-29T23:15:51.000Z</published>
-    <updated>2017-10-05T00:15:47.000Z</updated>
+    <updated>2017-10-10T09:15:18.000Z</updated>
     
     <summary type="html">
     
       &lt;h1 id=&quot;本文目的&quot;&gt;&lt;a href=&quot;#本文目的&quot; class=&quot;headerlink&quot; title=&quot;本文目的&quot;&gt;&lt;/a&gt;本文目的&lt;/h1&gt;&lt;p&gt;这篇文章主要会给大家介绍一下如何将Python和Hadoop结合起来工作。有接触过MapReduce的朋友都知道，Hadoop的运行环境主要是Java，一般介绍Hadoop和MapReduce的教程和书籍也都是基于Java的。因为我个人对Java并不太感冒，一直以来钟情于Python的简洁实用理念，同时又对MapReduce有兴趣，因此萌生了Python的MapReduce结合的想法。本文也是我经过Google学习他人教程，以及自己实际练习得出来的一些心得，在此分享给各位。&lt;/p&gt;
-&lt;hr&gt;
-&lt;h1 id=&quot;环境搭建&quot;&gt;&lt;a href=&quot;#环境搭建&quot; class=&quot;headerlink&quot; title=&quot;环境搭建&quot;&gt;&lt;/a&gt;环境搭建&lt;/h1&gt;&lt;p&gt;首先，你需要有个Hadoop的运行环境，还有Python运行环境。本文主要目的不在分享安装环境，因此有从零开始的朋友，可以先去百度或者Google上搜一下相关教程。下面分享几个相关的教程：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;http://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/SingleCluster.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hadoop: Setting up a Single Node Cluster&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.powerxing.com/install-hadoop/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hadoop安装教程_单机/伪分布式配置_Hadoop2.6.0/Ubuntu14.04&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.tashan10.com/yong-dockerda-jian-hadoopwei-fen-bu-shi-ji-qun/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;使用Docker在本地搭建Hadoop分布式集群&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
     
     </summary>
     
       <category term="Big Data" scheme="http://yuannow.com/categories/Big-Data/"/>
     
     
-      <category term="Hadoop" scheme="http://yuannow.com/tags/Hadoop/"/>
-    
       <category term="Python" scheme="http://yuannow.com/tags/Python/"/>
     
-      <category term="Docker" scheme="http://yuannow.com/tags/Docker/"/>
+      <category term="Hadoop" scheme="http://yuannow.com/tags/Hadoop/"/>
     
       <category term="MapReduce" scheme="http://yuannow.com/tags/MapReduce/"/>
+    
+      <category term="Docker" scheme="http://yuannow.com/tags/Docker/"/>
     
   </entry>
   
