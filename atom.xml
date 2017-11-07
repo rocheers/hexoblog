@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yuannow.com/"/>
-  <updated>2017-10-10T09:12:39.000Z</updated>
+  <updated>2017-11-07T02:47:10.000Z</updated>
   <id>http://yuannow.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Selenium和BeautifulSoup的简单应用：爬取Pythonbooks.org</title>
+    <link href="http://yuannow.com/2017/11/06/Python-Books-Crawler/"/>
+    <id>http://yuannow.com/2017/11/06/Python-Books-Crawler/</id>
+    <published>2017-11-06T22:23:06.000Z</published>
+    <updated>2017-11-07T02:47:10.000Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;使用Python是个很有意思的体验，语法相对简单，各种包的支持也非常到位，因此无论用Python解决什么问题，都觉得弹指间可以让其灰飞烟灭。作为一个工具，一种编程语言，在帮助不同人群实现各种有趣的小目标这点上，Python真的是无出其右。&lt;/p&gt;
+&lt;h1 id=&quot;本文目的&quot;&gt;&lt;a href=&quot;#本文目的&quot; class=&quot;headerlink&quot; title=&quot;本文目的&quot;&gt;&lt;/a&gt;本文目的&lt;/h1&gt;&lt;p&gt;Python中有一种很好玩的应用，就是爬虫，简单说就是通过它，用户可以抓取网页上的信息。比如，在本篇文章中，我就将介绍自己爬取Pythonbooks网站的过程，以此来让各位对爬虫有个大概的认识，并且描述过程中我也会顺带介绍一下Selenium和BeautifulSoup两个爬虫中常用包的用法。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Web Application" scheme="http://yuannow.com/categories/Web-Application/"/>
+    
+    
+      <category term="Python" scheme="http://yuannow.com/tags/Python/"/>
+    
+      <category term="Selenium" scheme="http://yuannow.com/tags/Selenium/"/>
+    
+      <category term="BeautifulSoup" scheme="http://yuannow.com/tags/BeautifulSoup/"/>
+    
+      <category term="crawler" scheme="http://yuannow.com/tags/crawler/"/>
+    
+  </entry>
   
   <entry>
     <title>用Python在Hadoop上实现搜索自动补全</title>
