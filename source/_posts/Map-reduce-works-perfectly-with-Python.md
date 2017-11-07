@@ -31,14 +31,14 @@ mapper要做的工作就是从`stdin`里读取数据，然后分割成`<key, val
 `mapper.py`
 ```python
 #!/usr/bin/env python3
-
+    
 import sys
-
+    
 # 从stdin中获取输出信息
 for line in sys.stdin:
     words = line.strip().split(" ")
     for word in words:
-
+    
         # output format: word'\t'1
         print("{0}\t{1}".format(word, 1))
 ```
@@ -50,12 +50,12 @@ for line in sys.stdin:
 `reducer.py`
 ```python
 #!/usr/bin/env python3
-
+    
 import sys
-
+    
 last_word = None
 total_count = 0
-
+    
 for line in sys.stdin:
     word, count = line.strip().split("\t")
     count = int(count)
@@ -67,7 +67,7 @@ for line in sys.stdin:
         total_count = 0
     last_word = word
     total_count += count
-
+    
 # 不要忘记最后一个word的输出
 if last_word:
     print("{0}\t{1}".format(last_word, total_count))
@@ -127,7 +127,7 @@ Found 1 item
 -rw-r--r--   2 root supergroup        127 2017-09-30 03:57 /input/words1.txt
 root@hadoop-master:~/src/demo#
 ```
-
+    
 `words1.txt`
 ```
 Let me write down something trivial
@@ -200,7 +200,7 @@ root@hadoop-master:~/src/demo# hdfs dfs -rm -r /output
 17/09/30 04:48:37 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.
 Deleted /output
 root@hadoop-master:~/src/demo# ./run_script.sh /input /output mapper.py reducer.py
-
+    
 Running python in Hadoop by hadoop streaming...
 ```
 这里我自己做了`run_script.sh`这样子一个shell script，用来缩短执行命令的长度，不然每次都要输入那么长真的好麻烦……
